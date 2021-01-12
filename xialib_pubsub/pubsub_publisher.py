@@ -9,13 +9,13 @@ class PubsubPublisher(Publisher):
     """
     blob_support = True
 
-    def __init__(self, pub_client: pubsub_v1.PublisherClient):
+    def __init__(self, pub: pubsub_v1.PublisherClient):
         super().__init__()
-        if not isinstance(pub_client, pubsub_v1.PublisherClient):
+        if not isinstance(pub, pubsub_v1.PublisherClient):
             self.logger.error("pub_client must be type of Pubsub Publisher Client")
             raise TypeError("XIA-010001")
         else:
-            self.publisher = pub_client
+            self.publisher = pub
 
     def check_destination(self, project_id: str, topic_id: str):
         """ Check if it possible to publish to the specified project / topic
