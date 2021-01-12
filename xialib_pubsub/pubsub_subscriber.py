@@ -12,13 +12,13 @@ class PubsubSubscriber(Subscriber):
     """Google Pubsub based subscriber
 
     """
-    def __init__(self, sub_client: pubsub_v1.SubscriberClient):
+    def __init__(self, sub: pubsub_v1.SubscriberClient):
         super().__init__()
-        if not isinstance(sub_client, pubsub_v1.SubscriberClient):
+        if not isinstance(sub, pubsub_v1.SubscriberClient):
             self.logger.error("sub_client must be type of Pubsub Subscriber Client")
             raise TypeError("XIA-010002")
         else:
-            self.subscriber = sub_client
+            self.subscriber = sub
 
     def pull(self, project_id: str, subscription_id: str):
         subscription_path = self.subscriber.subscription_path(project_id, subscription_id)

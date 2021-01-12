@@ -26,13 +26,13 @@ def callback(s: PubsubSubscriber, message: dict, source, subscription_id):
 @pytest.fixture(scope='module')
 def publisher():
     pub_client = pubsub_v1.PublisherClient()
-    publisher = PubsubPublisher(pub_client=pub_client)
+    publisher = PubsubPublisher(pub=pub_client)
     yield publisher
 
 
 def test_publish_and_pull(publisher: PubsubPublisher):
     publisher.publish(project_id, topic2, header_1, gzip.compress(b'[]'))
-    subscriber = PubsubSubscriber(sub_client=pubsub_v1.SubscriberClient())
+    subscriber = PubsubSubscriber(sub=pubsub_v1.SubscriberClient())
     for message in subscriber.pull(project_id, subscription2):
         header, data, id = subscriber.unpack_message(message)
         assert int(header['age']) == 2
@@ -47,8 +47,8 @@ def test_publish_and_streaming_pull(publisher: PubsubPublisher):
     publisher.publish(project_id, topic1, header_1, gzip.compress(b'[]'))
     publisher.publish(project_id, topic2, header_1, gzip.compress(b'[]'))
     loop = asyncio.get_event_loop()
-    subscriber1 = PubsubSubscriber(sub_client=pubsub_v1.SubscriberClient())
-    subscriber2 = PubsubSubscriber(sub_client=pubsub_v1.SubscriberClient())
+    subscriber1 = PubsubSubscriber(sub=pubsub_v1.SubscriberClient())
+    subscriber2 = PubsubSubscriber(sub=pubsub_v1.SubscriberClient())
     task1 = subscriber1.stream(project_id, subscription1, callback=callback, timeout=2)
     task2 = subscriber2.stream(project_id, subscription2, callback=callback, timeout=2)
     loop.run_until_complete(asyncio.wait([task1, task2]))
@@ -57,6 +57,6 @@ def test_publish_and_streaming_pull(publisher: PubsubPublisher):
 
 def test_exceptions():
     with pytest.raises(TypeError):
-        sub = PubsubSubscriber(sub_client=object())
+        sub = PubsubSubscriber(sub=object())
     with pytest.raises(TypeError):
-        pub = PubsubPublisher(pub_client=object())
+        pub = PubsubPublisher(pub=object())
