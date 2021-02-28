@@ -48,7 +48,7 @@ class PubsubGcrPublisher(Publisher):
         Notes:
             We will try to get the welcome message to check the available by using the return http code.
         """
-        target_audience = "https://" + topic_id
+        target_audience = "https://" + project_id
         headers = {"Authorization": self.get_auth_token(target_audience)}
         resp = requests.get(target_audience, headers=headers)
         if resp.status_code == 200:
@@ -62,7 +62,7 @@ class PubsubGcrPublisher(Publisher):
         except (UnicodeEncodeError, AttributeError):
             pass
         envelope = {"message": {"attributes": header, "data": base64.b64encode(data).decode()}}
-        target_audience = "https://" + topic_id
+        target_audience = "https://" + project_id
         headers = {"Authorization": self.get_auth_token(target_audience)}
 
         resp = requests.post(target_audience, headers=headers, json=envelope)
