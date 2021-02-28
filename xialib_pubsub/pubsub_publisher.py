@@ -2,10 +2,8 @@ from google.cloud import pubsub_v1
 from xialib.publisher import Publisher
 
 class PubsubPublisher(Publisher):
-    """A local file system based publisher
+    """Publisher based on Google Pubsub
 
-    Data is saved to path of (destination->topic_id->current_timestamp ).
-    all content is dumped to a json file. Because the json do not support blob, the data part is base64 encoded
     """
     blob_support = True
 
