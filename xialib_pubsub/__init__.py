@@ -4,4 +4,4 @@ from xialib_pubsub.pubsub_gcr_publisher import PubsubGcrPublisher
 
 __all__ = ['PubsubPublisher', 'PubsubSubscriber', 'PubsubGcrPublisher']
 
-__version__ = "0.1.3"
+__version__ = "0.1.4"
